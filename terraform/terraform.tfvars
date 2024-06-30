@@ -1,0 +1,5 @@
+aws_region      = "us-east-1"
+instance_type   = "t2.micro"
+key_name        = "nd-key"
+vpc_id          = "vpc-01633ab57f0aaa8a5"
+subnet_id       = "subnet-04de358a4fb519df3"
