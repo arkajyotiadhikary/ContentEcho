@@ -35,7 +35,7 @@ resource "aws_security_group" "strapi_sg" {
 }
 
 resource "aws_instance" "strapi" {
-  ami           = "ami-0c55b159cbfafe1f0"  # Example AMI ID, choose one that matches your region
+  ami           = "ami-04b70fa74e45c3917"
   instance_type = var.instance_type
   key_name      = var.key_name
   subnet_id     = var.subnet_id
