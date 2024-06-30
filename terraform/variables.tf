@@ -29,3 +29,8 @@ variable "private_key_path" {
   description = "Path to the private key for SSH access"
   type        = string
 }
+
+variable "sg_id" {
+  description = "ID of the existing security group"
+  type        = string
+}
