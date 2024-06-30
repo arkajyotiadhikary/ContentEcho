@@ -8,5 +8,5 @@ terraform {
 }
 
 module "ec2" {
-  source = "."
+  source = "./."
 }
