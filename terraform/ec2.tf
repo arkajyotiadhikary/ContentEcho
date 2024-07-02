@@ -1,5 +1,5 @@
 resource "aws_instance" "strapi" {
-  ami           = "ami-04b70fa74e45c3917"
+  ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
   key_name      = var.key_name
   subnet_id     = var.subnet_id
