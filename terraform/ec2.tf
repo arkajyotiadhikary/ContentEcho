@@ -22,3 +22,4 @@ resource "aws_instance" "strapi" {
               npm install
               npm run develop
               EOF
+}
