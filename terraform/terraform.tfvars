@@ -1,6 +1,6 @@
 aws_region      = "ap-south-1"
 instance_type   = "t2.small"
-key_name        = "arka_key"
+key_name        = "krshna"
 vpc_id          = "vpc-00897f625567d2980"
 subnet_id       = "subnet-0b21f1601c125a7e8"
 private_key_path = "~/.ssh/id_rsa"

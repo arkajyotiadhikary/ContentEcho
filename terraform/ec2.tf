@@ -1,4 +1,4 @@
-resource "aws_instance" "strapi" {
+resource "aws_instance" "ar-strapi" {
   ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
   key_name      = var.key_name
@@ -6,7 +6,7 @@ resource "aws_instance" "strapi" {
   vpc_security_group_ids = [var.sg_id]  # Reference the security group by ID
 
   tags = {
-    Name = "StrapiServer"
+    Name = "ar-strapi"
   }
 
   user_data = <<-EOF
