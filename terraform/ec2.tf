@@ -1,3 +1,7 @@
+variable "private_key_path" {
+  default = "~/.ssh/id_rsa"
+}
+
 resource "aws_instance" "ar-strapi" {
   ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
