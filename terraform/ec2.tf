@@ -22,20 +22,3 @@ resource "aws_instance" "strapi" {
               npm install
               npm run develop
               EOF
-
-  provisioner "remote-exec" {
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file(var.private_key_path)
-      host        = self.public_ip
-    }
-
-    inline = [
-      "cd /var/www/strapi/ContentEcho",
-      "git pull origin strapi-ec2",
-      "npm install",
-      "npm run develop"
-    ]
-  }
-}
