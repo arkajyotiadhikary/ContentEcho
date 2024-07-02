@@ -51,7 +51,6 @@ resource "null_resource" "provision" {
     host        = aws_instance.ar-strapi.public_ip
     user        = "ubuntu"
     private_key = file(var.private_key_path)
-    host_key    = "accept-new"
   }
 
   provisioner "remote-exec" {
