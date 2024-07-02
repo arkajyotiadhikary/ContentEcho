@@ -44,11 +44,11 @@ resource "aws_instance" "ar-strapi" {
 }
 
 resource "null_resource" "provision" {
-  depends_on = [aws_instance.strapi]
+  depends_on = [aws_instance.ar-strapi]
 
   connection {
     type        = "ssh"
-    host        = aws_instance.strapi.public_ip
+    host        = aws_instance.ar-strapi.public_ip
     user        = "ubuntu"
     private_key = file(var.private_key_path)
   }
