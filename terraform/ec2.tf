@@ -10,18 +10,7 @@ variable "instance_name" {
   default     = "ar-strapi"
 }
 
-# Data source to find existing instances
-data "aws_instance" "existing_instance" {
-  filter {
-    name   = "tag:Name"
-    values = [var.instance_name]
-  }
-}
-
-# Conditional resource creation
 resource "aws_instance" "ar-strapi" {
-  count = data.aws_instance.existing_instance.id == "" ? 1 : 0
-
   ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
   key_name      = var.key_name
@@ -61,12 +50,11 @@ resource "aws_instance" "ar-strapi" {
 }
 
 resource "null_resource" "provision" {
-  count = data.aws_instance.existing_instance.id == "" ? 1 : 0
   depends_on = [aws_instance.ar-strapi]
 
   connection {
     type        = "ssh"
-    host        = aws_instance.ar-strapi[0].public_ip
+    host        = aws_instance.ar-strapi.public_ip
     user        = "ubuntu"
     private_key = var.private_key
   }
