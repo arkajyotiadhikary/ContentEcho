@@ -11,16 +11,19 @@ variable "instance_name" {
 }
 
 # Data source to find existing instances
-data "aws_instances" "existing_instances" {
+data "aws_instance" "existing_instance" {
   filter {
     name   = "tag:Name"
     values = [var.instance_name]
   }
+
+  # Setting most_recent to true to get the latest instance if multiple instances exist
+  most_recent = true
 }
 
 # Conditional resource creation
 resource "aws_instance" "ar-strapi" {
-  count = length(data.aws_instances.existing_instances.instances) == 0 ? 1 : 0
+  count = data.aws_instance.existing_instance.id == "" ? 1 : 0
 
   ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
@@ -61,7 +64,7 @@ resource "aws_instance" "ar-strapi" {
 }
 
 resource "null_resource" "provision" {
-  count = length(data.aws_instances.existing_instances.instances) == 0 ? 1 : 0
+  count = data.aws_instance.existing_instance.id == "" ? 1 : 0
   depends_on = [aws_instance.ar-strapi]
 
   connection {
