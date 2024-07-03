@@ -26,7 +26,7 @@ resource "aws_instance" "ar-strapi" {
   instance_type = var.instance_type
   key_name      = var.key_name
   subnet_id     = var.subnet_id
-  vpc_security_group_id = [var.sg_id]  # Reference the security group by ID
+  vpc_security_group_ids = [var.sg_id]  # Reference the security group by ID
 
   tags = {
     Name = var.instance_name
