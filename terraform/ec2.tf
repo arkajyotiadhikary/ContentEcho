@@ -4,7 +4,24 @@ variable "private_key" {
   sensitive   = true
 }
 
+variable "instance_name" {
+  description = "Name of the EC2 instance"
+  type        = string
+  default     = "ar-strapi"
+}
+
+# Data source to find an existing instance
+data "aws_instance" "existing_instance" {
+  filter {
+    name   = "tag:Name"
+    values = [var.instance_name]
+  }
+}
+
+# Conditional resource creation
 resource "aws_instance" "ar-strapi" {
+  count = length(data.aws_instance.existing_instance.ids) == 0 ? 1 : 0
+
   ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
   key_name      = var.key_name
@@ -12,7 +29,7 @@ resource "aws_instance" "ar-strapi" {
   vpc_security_group_ids = [var.sg_id]  # Reference the security group by ID
 
   tags = {
-    Name = "ar-strapi"
+    Name = var.instance_name
   }
 
   user_data = <<-EOF
@@ -26,14 +43,11 @@ resource "aws_instance" "ar-strapi" {
               # Install PM2 globally
               sudo npm install -g pm2
 
-              # Install Strapi globally
-              sudo npm install -g strapi@latest
-
               # Create directory for Strapi
-              mkdir -p /var/www/strapi
+              mkdir -p /var/www
 
               # Navigate to the directory
-              cd /var/www/strapi
+              cd /var/www
 
               # Clone the repository
               git clone https://github.com/arkajyotiadhikary/ContentEcho.git
@@ -41,15 +55,13 @@ resource "aws_instance" "ar-strapi" {
               # Navigate to the repository
               cd ContentEcho
 
-              # Checkout the specific branch
-              git checkout strapi-ec2
-
               # Install dependencies
               npm install
               EOF
 }
 
 resource "null_resource" "provision" {
+  count = length(data.aws_instance.existing_instance.ids) == 0 ? 1 : 0
   depends_on = [aws_instance.ar-strapi]
 
   connection {
@@ -62,7 +74,7 @@ resource "null_resource" "provision" {
   provisioner "remote-exec" {
     inline = [
       "echo 'Running remote-exec provisioner'",
-      "cd /var/www/strapi/ContentEcho",
+      "cd /var/www/ContentEcho",
       "pm2 start npm --name 'strapi' -- run develop",
       "pm2 save",
       "pm2 startup systemd -u $(whoami) --hp /home/$(whoami)",
