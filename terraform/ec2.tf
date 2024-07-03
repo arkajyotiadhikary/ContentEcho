@@ -1,5 +1,7 @@
-variable "private_key_path" {
-  default = "/home/ubuntu/.ssh/id_rsa"  # Replace with the absolute path to your private key
+variable "private_key" {
+  description = "Private SSH key for provisioning"
+  type        = string
+  sensitive   = true
 }
 
 resource "aws_instance" "ar-strapi" {
@@ -54,7 +56,7 @@ resource "null_resource" "provision" {
     type        = "ssh"
     host        = aws_instance.ar-strapi.public_ip
     user        = "ubuntu"
-    private_key = file(var.private_key_path)
+    private_key = var.private_key
   }
 
   provisioner "remote-exec" {
