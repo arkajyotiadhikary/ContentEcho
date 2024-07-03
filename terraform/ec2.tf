@@ -20,7 +20,7 @@ data "aws_instance" "existing_instance" {
 
 # Conditional resource creation
 resource "aws_instance" "ar-strapi" {
-  count = length(data.aws_instance.existing_instance.id) == 0 ? 1 : 0
+  count = length(data.aws_instance.existing_instance.ids) == 0 ? 1 : 0
 
   ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
@@ -61,12 +61,12 @@ resource "aws_instance" "ar-strapi" {
 }
 
 resource "null_resource" "provision" {
-  count = length(data.aws_instance.existing_instance.id) == 0 ? 1 : 0
+  count = length(data.aws_instance.existing_instance.ids) == 0 ? 1 : 0
   depends_on = [aws_instance.ar-strapi]
 
   connection {
     type        = "ssh"
-    host        = aws_instance.ar-strapi.public_ip
+    host        = aws_instance.ar-strapi[count.index].public_ip
     user        = "ubuntu"
     private_key = var.private_key
   }
@@ -81,4 +81,12 @@ resource "null_resource" "provision" {
       "sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u $(whoami) --hp /home/$(whoami)"
     ]
   }
+}
+
+output "instance_id" {
+  value = aws_instance.ar-strapi[count.index].id
+}
+
+output "public_ip" {
+  value = aws_instance.ar-strapi[count.index].public_ip
 }
