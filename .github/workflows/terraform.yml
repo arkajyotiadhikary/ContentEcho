@@ -33,7 +33,7 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve -var private_key="${{ secrets.SSH_PRIVATE_KEY }}" plan.out
+      run: terraform apply -auto-approve plan.out
       working-directory: terraform/
 
     env:
