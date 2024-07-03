@@ -16,29 +16,47 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Check for existing EC2 instance
+      id: check_instance
+      run: |
+        INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=ar-strapi" --query "Reservations[].Instances[].InstanceId" --output text)
+        echo "INSTANCE_ID=${INSTANCE_ID}" >> $GITHUB_ENV
+        if [ -n "$INSTANCE_ID" ]; then
+          echo "Instance already exists: $INSTANCE_ID"
+        else
+          echo "No existing instance found"
+        fi
+
     - name: Set up Terraform
+      if: env.INSTANCE_ID == ''
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.0.0
 
     - name: Install SSH key
+      if: env.INSTANCE_ID == ''
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Terraform Init
+      if: env.INSTANCE_ID == ''
       run: terraform init
       working-directory: terraform/
 
     - name: Terraform Plan
+      if: env.INSTANCE_ID == ''
       run: terraform plan -out=plan.out -var private_key="${{ secrets.SSH_PRIVATE_KEY }}" -var-file=terraform.tfvars
       working-directory: terraform/
 
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main'
+      if: env.INSTANCE_ID == ''
       run: terraform apply -auto-approve plan.out
       working-directory: terraform/
-
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
