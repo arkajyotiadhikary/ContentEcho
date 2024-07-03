@@ -60,3 +60,4 @@ jobs:
       if: env.INSTANCE_ID == ''
       run: terraform apply -auto-approve plan.out
       working-directory: terraform/
+      
