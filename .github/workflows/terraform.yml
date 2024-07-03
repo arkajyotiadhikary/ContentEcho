@@ -28,12 +28,12 @@ jobs:
       working-directory: terraform/
 
     - name: Terraform Plan
-      run: terraform plan -out=plan.out -var-file=terraform.tfvars
+      run: terraform plan -out=plan.out -var private_key="${{ secrets.SSH_PRIVATE_KEY }}" -var-file=terraform.tfvars
       working-directory: terraform/
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve plan.out
+      run: terraform apply -auto-approve -var private_key="${{ secrets.SSH_PRIVATE_KEY }}" plan.out
       working-directory: terraform/
 
     env:
