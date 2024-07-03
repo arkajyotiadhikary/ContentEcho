@@ -1,5 +1,5 @@
 variable "private_key_path" {
-  default = "~/.ssh/id_rsa"
+  default = "/home/ubuntu/.ssh/id_rsa"  # Replace with the absolute path to your private key
 }
 
 resource "aws_instance" "ar-strapi" {
