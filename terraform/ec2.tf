@@ -16,8 +16,6 @@ data "aws_instance" "existing_instance" {
     name   = "tag:Name"
     values = [var.instance_name]
   }
-
-  most_recent = true
 }
 
 # Conditional resource creation
