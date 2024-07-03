@@ -16,9 +16,6 @@ data "aws_instance" "existing_instance" {
     name   = "tag:Name"
     values = [var.instance_name]
   }
-
-  # Setting most_recent to true to get the latest instance if multiple instances exist
-  most_recent = true
 }
 
 # Conditional resource creation
