@@ -20,13 +20,13 @@ data "aws_instance" "existing_instance" {
 
 # Conditional resource creation
 resource "aws_instance" "ar-strapi" {
-  count = length(data.aws_instance.existing_instance.public_ip) == 0 ? 1 : 0
+  count = length(data.aws_instance.existing_instance.id) == 0 ? 1 : 0
 
   ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = var.instance_type
   key_name      = var.key_name
   subnet_id     = var.subnet_id
-  vpc_security_group_ids = [var.sg_id]  # Reference the security group by ID
+  vpc_security_group_id = [var.sg_id]  # Reference the security group by ID
 
   tags = {
     Name = var.instance_name
@@ -61,7 +61,7 @@ resource "aws_instance" "ar-strapi" {
 }
 
 resource "null_resource" "provision" {
-  count = length(data.aws_instance.existing_instance.public_ip) == 0 ? 1 : 0
+  count = length(data.aws_instance.existing_instance.id) == 0 ? 1 : 0
   depends_on = [aws_instance.ar-strapi]
 
   connection {
@@ -76,7 +76,9 @@ resource "null_resource" "provision" {
       "echo 'Running remote-exec provisioner'",
       "cd /var/www/ContentEcho",
       "pm2 start npm --name 'strapi' -- run develop",
-      "pm2 save"
+      "pm2 save",
+      "pm2 startup systemd -u $(whoami) --hp /home/$(whoami)",
+      "sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u $(whoami) --hp /home/$(whoami)"
     ]
   }
 }
