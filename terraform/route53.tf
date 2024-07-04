@@ -4,7 +4,7 @@ resource "aws_route53_record" "subdomain_record" {
   name    = "arka.${var.domain_name}"
   type    = "A"
   ttl     = "60"
-  records = [aws_instance.ec2_instance.public_ip]
+  records = [aws_instance.ar-strapi.public_ip]
 }
 
 # Data source to fetch Route 53 hosted zone ID
