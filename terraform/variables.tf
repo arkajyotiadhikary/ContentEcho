@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "The AWS region to deploy to"
   type        = string
-  default     = "us-east-1"
+  default     = "ap-south-1"
 }
 
 variable "instance_type" {
@@ -33,4 +33,22 @@ variable "sg_id" {
 variable "domain_name" {
   description = "value of the domain name"
   type        = string
+}
+
+variable "project_name" {
+  description = "The project name"
+  type = string
+  default = "ar-strapi"
+}
+
+variable "sub_domain" {
+  description = "The subdomain to assign to the ecs service"
+  type = string
+  default = "arka.contentecho.in"
+}
+
+variable "hosted_zone_id" {
+  description = "The route 53 hosted zone id"
+  type = string
+  default = "Z06607023RJWXGXD2ZL6M"
 }
