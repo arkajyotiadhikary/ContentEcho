@@ -1,15 +1,10 @@
 # Route 53 resource - create DNS record
 resource "aws_route53_record" "subdomain_record" {
-  zone_id = data.aws_route53_zone.main.zone_id
+  zone_id = "Z06607023RJWXGXD2ZL6M"
   name    = "arka.${var.domain_name}"
   type    = "A"
   ttl     = "60"
   records = [aws_instance.ar-strapi.public_ip]
-}
-
-# Data source to fetch Route 53 hosted zone ID
-data "aws_route53_zone" "main" {
-  id = "Z06607023RJWXGXD2ZL6M"
 }
 
 # Output the subdomain DNS name
