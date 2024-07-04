@@ -29,3 +29,8 @@ variable "sg_id" {
   description = "ID of the existing security group"
   type        = string
 }
+
+variable "domain_name" {
+  description = "value of the domain name"
+  type        = string
+}
