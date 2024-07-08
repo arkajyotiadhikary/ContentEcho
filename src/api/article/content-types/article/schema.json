@@ -4,7 +4,8 @@
   "info": {
     "singularName": "article",
     "pluralName": "articles",
-    "displayName": "Article"
+    "displayName": "Article",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -29,7 +30,8 @@
     "status": {
       "type": "enumeration",
       "enum": [
-        "Draft, Published"
+        "Draft",
+        " Published"
       ]
     },
     "users_permissions_user": {
@@ -51,14 +53,15 @@
       "inversedBy": "articles"
     },
     "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "comments": {
       "type": "relation",

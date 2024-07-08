@@ -1,0 +1,12 @@
+{
+  "name": "strapi",
+  "image": "docker.io/strapi/strapi:latest",
+  "cpu": 256,
+  "memory": 512,
+  "portMappings": [
+    {
+      "containerPort": 1337,
+      "hostPort": 1337
+    }
+  ]
+}

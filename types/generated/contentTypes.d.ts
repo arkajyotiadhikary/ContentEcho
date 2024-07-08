@@ -853,6 +853,7 @@ export interface ApiArticleArticle extends Schema.CollectionType {
     singularName: 'article';
     pluralName: 'articles';
     displayName: 'Article';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -863,7 +864,7 @@ export interface ApiArticleArticle extends Schema.CollectionType {
     content: Attribute.Blocks;
     excerpt: Attribute.Text;
     published: Attribute.DateTime;
-    status: Attribute.Enumeration<['Draft, Published']>;
+    status: Attribute.Enumeration<['Draft', ' Published']>;
     users_permissions_user: Attribute.Relation<
       'api::article.article',
       'manyToOne',
