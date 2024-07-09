@@ -52,3 +52,20 @@ variable "hosted_zone_id" {
   type = string
   default = "Z06607023RJWXGXD2ZL6M"
 }
+
+variable "public_subnet_cidrs" {
+  description = "List of public subnet CIDRs"
+  type        = list(string)
+  default     = ["38.0.101.0/24", "89.0.142.0/24"]
+}
+
+variable "availability_zones" {
+  description = "List of availability zones"
+  type        = list(string)
+  default     = ["ap-south-1a", "ap-south-1b"]
+}
+variable "vpc_cidr" {
+  description = "List of availability zones"
+  type        = string
+  default     = "38.0.0.0/16"
+}

@@ -1,9 +1,10 @@
-# Route 53 resource - create DNS record
 resource "aws_route53_record" "subdomain_record" {
   zone_id = var.hosted_zone_id
-  name    = "arka.${var.domain_name}"
+  name    = "${var.sub_domain}."
   type    = "A"
-  ttl     = "60"
-  records = [aws_instance.ar-strapi.public_ip]
+  alias {
+    name                   = aws_lb.strapi_lb.dns_name
+    zone_id                = aws_lb.strapi_lb.zone_id
+    evaluate_target_health = false
+  }
 }
-

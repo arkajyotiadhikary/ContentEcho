@@ -1,12 +1,41 @@
-{
-  "name": "strapi",
-  "image": "docker.io/strapi/strapi:latest",
-  "cpu": 256,
-  "memory": 512,
-  "portMappings": [
-    {
-      "containerPort": 1337,
-      "hostPort": 1337
-    }
-  ]
-}
+[
+  {
+    "name": "strapi-container",
+    "image": "strapi/strapi:latest",
+    "memory": 512,
+    "cpu": 256,
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 1337,
+        "hostPort": 1337
+      }
+    ],
+    "environment": [
+      {
+        "name": "DATABASE_CLIENT",
+        "value": "postgres"
+      },
+      {
+        "name": "DATABASE_HOST",
+        "value": "${aws_db_instance.strapi_db_instance.address}"
+      },
+      {
+        "name": "DATABASE_PORT",
+        "value": "${aws_db_instance.strapi_db_instance.port}"
+      },
+      {
+        "name": "DATABASE_NAME",
+        "value": "${aws_db_instance.strapi_db_instance.name}"
+      },
+      {
+        "name": "DATABASE_USERNAME",
+        "value": "${aws_db_instance.strapi_db_instance.username}"
+      },
+      {
+        "name": "DATABASE_PASSWORD",
+        "value": "${aws_db_instance.strapi_db_instance.password}"
+      }
+    ]
+  }
+]
