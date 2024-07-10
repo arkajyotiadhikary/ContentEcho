@@ -15,14 +15,14 @@ resource "aws_lb" "strapi_lb" {
   load_balancer_type = "application"
   internal           = false
   security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = aws_subnet.public.*.id
+  subnets            = var.subnet_ids
 }
 
 resource "aws_lb_target_group" "strapi_tg" {
   name     = "strapi-tg"
   port     = 1337
   protocol = "HTTP"
-  vpc_id   = aws_vpc.strapi_vpc.id
+  vpc_id   = var.vpc_id
   target_type = "ip"
 }
 

@@ -1,7 +1,7 @@
 resource "aws_security_group" "alb_sg" {
   name        = "alb_sg"
   description = "Security group for ALB"
-  vpc_id      = aws_vpc.strapi_vpc.id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 80
